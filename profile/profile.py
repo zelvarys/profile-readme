@@ -6,6 +6,9 @@ from lxml import etree
 import time
 import hashlib
 
+import os
+os.chdir(os.path.dirname(os.path.abspath(__file__)) + '/..')
+
 # Fine-grained personal access token with All Repositories access:
 # Account permissions: read:Followers, read:Starring, read:Watching
 # Repository permissions: read:Commit statuses, read:Contents, read:Issues, read:Metadata, read:Pull Requests
@@ -236,7 +239,7 @@ def cache_builder(edges, comment_size, force_cache, loc_add=0, loc_del=0):
   If recursive_loc fails (e.g. persistent 502), keeps the cached value instead of crashing.
   """
   cached = True
-  filename = 'cache/'+hashlib.sha256(USER_NAME.encode('utf-8')).hexdigest()+'.txt'
+  filename = 'profile/'+hashlib.sha256(USER_NAME.encode('utf-8')).hexdigest()+'.txt'
   try:
     with open(filename, 'r') as f:
       data = f.readlines()
@@ -291,7 +294,7 @@ def flush_cache(edges, filename, comment_size):
 
 
 def force_close_file(data, cache_comment):
-  filename = 'cache/'+hashlib.sha256(USER_NAME.encode('utf-8')).hexdigest()+'.txt'
+  filename = 'profile/'+hashlib.sha256(USER_NAME.encode('utf-8')).hexdigest()+'.txt'
   with open(filename, 'w') as f:
     f.writelines(cache_comment)
     f.writelines(data)
@@ -341,7 +344,7 @@ def find_and_replace(root, element_id, new_text):
 
 def commit_counter(comment_size):
   total_commits = 0
-  filename = 'cache/'+hashlib.sha256(USER_NAME.encode('utf-8')).hexdigest()+'.txt'
+  filename = 'profile/'+hashlib.sha256(USER_NAME.encode('utf-8')).hexdigest()+'.txt'
   with open(filename, 'r') as f:
     data = f.readlines()
   cache_comment = data[:comment_size]
